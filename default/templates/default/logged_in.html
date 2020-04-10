@@ -1,0 +1,19 @@
+{% extends 'default/template.html' %}
+{% load static %}
+{% block picword %}
+{% if user.is_authenticated %}
+{{ message }}
+{% else %}
+{{ message }}
+{% endif %}
+{% endblock %}
+
+
+
+{% block rightHeader %}
+
+{% endblock %}
+
+{% block imagecontent %}
+
+{% endblock %}

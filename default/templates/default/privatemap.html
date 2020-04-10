@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+
+    <head>
+        <title>Event Maps</title>
+
+        <link rel="stylesheet" type="text/css" href="{% static 'default/styles2.css' %}">
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+        <script src="https://api.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.js"></script>
+        <link href="https://api.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.css" rel="stylesheet" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+        <!-- Turf.js plugin -->
+        <script src='https://npmcdn.com/@turf/turf/turf.min.js'></script>
+    </head>
+
+    <body>
+
+        <div class="navbar">
+            <div id="my-element" hidden >{{page}}</div>
+            <a href="{% url 'default:index' %}" >Home</a>
+            <a href="{% url 'default:about' %}" >About</a>
+            {% if user.is_authenticated %}
+            <a href="{% url 'default:log_out' %}" >Logout</a>
+            {% else %}
+            <a href="{% url 'default:index' %}">Log in/ Sign Up</a>
+            {% endif %}
+
+
+        </div>
+
+        <div class = "picContainer">
+            <img src= "{% static 'default/Image2.jpg' %}" width = 100% height = "200" alt="Photo of mountains">
+            <div class = "centered"><font color="white"><font size="72"><p style ="text-align: center;"><h1 class="display-4">{% block picword %}{{ message }}{% endblock %}</h1></p></font></font></div>
+        </div>
+
+        <div class="rowCon">
+            
+            <div class = "sideCol">
+                {% block sidecol %}
+                
+                <h3>Create an Event</h3>
+                
+                <form action = "{% url 'default:privateEvent' %}" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="lat" id ="lat" value="" />
+                    <input type="hidden" name="long" id = "long" value="" />
+                    <input type="hidden" name="page" id = "page" value= {{page}} />
+
+                    <hr>
+                    <input type="text" class="form-control" name="title" placeholder="Enter Title" required>
+                    <hr>
+                    <input type="text" name="comment" class="form-control" placeholder="Enter a short description">
+                    
+                    
+                 
+                    <hr>
+                    <div class="form-group">
+                        <label for="Icon">Select an Icon Type:</label>
+                        <select class="form-control" id="icon" name="icon">
+                          <option value="marker-15">Generic</option>
+                          <option value="road-closure">Road Block</option>
+                          <option value = "car-15">Car</option>
+                          <option value = "attraction-15">Attraction</option>
+                          <option value = "basketball-15">Sports</option>
+                          <option value = "information-15">Information</option>
+                          <option value = "parking-15">Parking</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Submit</button>
+
+                </form>
+                
+                {% endblock %}
+            </div>
+            
+
+            <div class = "main">
+
+                {% block rightHeader %}
+                {% endblock %}
+
+                <div class="media">
+                    {% block image %}{% endblock %}
+
+                    <div class="media-body">
+                      {% block imagecontent %}
+                      <style>
+
+                        #map { height: 600px; }
+                        .coordinates {
+                        background:white;
+                        color: black;
+                        position: relative;
+                        top: 40px;
+                        left: 10px;
+                        padding: 5px 10px;
+                        margin: 0;
+                        font-size: 11px;
+                        line-height: 18px;
+                        border-radius: 3px;
+                        display: none;
+                        }
+                            #instructions {
+        
+                            margin: 20px;
+                            width: 100%;
+                            top: 0;
+                            bottom: 20%;
+                            padding: 20px;
+                            background-color: rgba(255, 255, 255, 0.9);
+                            font-family: sans-serif;
+                            font-size: 0.8em;
+                            line-height: 2em;
+                            }
+
+                        
+                    
+                        .mapboxgl-popup {
+                            max-width: 400px;
+                            font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+                        }
+                        
+                    </style>
+                       
+                    <div id = "map"></div>
+                    <pre id="coordinates" class="coordinates"></pre>
+                    <hr>
+                    <div id = "instructions"></div>
+                    <script type="text/javascript" src="{% static 'default/map_private.js' %}"></script>
+                    
+
+
+                    <div class="detailBox">
+                        <div class="titleBox">
+                          <label><strong>User Comments about the event.</strong></label>
+                        </div>
+                        <div class="actionBox">
+                                  {% for i in privateComments.all %}
+                                    <div>
+                                      Author: {{ i.author }}
+                                      <br>
+                                    </div>
+                                    <div class="commentText">
+                                        <p class="">{{ i.comment }}</p> 
+                                      <hr>
+                                    </div>
+                                  {% endfor %}
+                        </div>
+                      </div>
+                    <hr>
+                    <form action = "{% url 'default:createprivatecomment' %}" method = "post">
+                        {% csrf_token %}
+                        <input type="text" id= "author" name="author" placeholder="Enter username/Anon">
+                        <div class="form-group">
+                            <br>
+                          <textarea class="form-control" name="comment" rows="3" placeholder="Enter your comment."></textarea>
+                        </div>
+                        <input type="hidden" name="page" id = "page" value= {{page}} />
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                 
+
+
+
+
+                      {% endblock %}
+        
+                    </div>
+                  </div>
+
+            </div>
+
+        </div>  
+
+        
+
+
+    </body>
+
+    
+</html>

@@ -1,0 +1,32 @@
+{% extends 'default/template.html' %}
+{% load static %}
+{% block picword %} {{ message }}{% endblock %}c
+
+
+
+{% block rightHeader %}
+
+<h3>Enter your information below.</h3>
+<hr>
+{% endblock %}
+
+{% block imagecontent %}
+
+<form action = "{% url 'default:acc_created' %}" method = "post">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="formGroupExampleInput">Create a username</label>
+        <input type="text" class="form-control" name="username" placeholder="Create a Username" required>
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">Create a password</label>
+        <input type="password" class="form-control" name="password" placeholder="Create a password" required>
+      </div>
+      <div class="form-group">
+        <label for="formGroupExampleInput">Enter e-mail</label>
+        <input type="text" class="form-control" name="email" placeholder="Enter your e-mail" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+{% endblock %}

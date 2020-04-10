@@ -1,0 +1,204 @@
+.navbar{
+    background-color: black;
+    display:flex;
+}
+
+.navbar a:hover{
+    background-color: White;
+    color: black;
+}
+.navbar a {
+   color: white;
+   padding: 14px 20px;
+   text-decoration: none;
+   text-align: center;
+ }
+
+ @media (max-width: 700px) {
+    .navbar {   
+    flex-direction: column;
+  }
+}
+
+.header{
+
+    position: relative;
+    text-align: left;
+    color:  black;
+
+}
+
+.bottomcenter{
+    position: absolute;
+    top: 50%;
+    left: 90%;
+    transform: translate(-50%, -50%);
+
+}
+
+.picContainer{
+    position: relative;
+    text-align: center;
+    color:  white;
+}
+
+
+.centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  p.round{
+    border: 2px black;
+    border-radius: 12px;
+  }
+
+  .sideCol{
+    
+    background-color: #f1f1f1;
+    padding: 20px;
+}
+
+.main {
+    flex: 70%;
+    background-color: white;
+    padding: 20px;
+  }
+
+  .rowCon{
+      display: flex;
+      flex-wrap: wrap;
+  }
+
+  .footer{
+    position: relative;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: ghostwhite;
+    color: white;
+    text-align: center;
+  }
+
+  .main2 {
+    flex: 100%;
+    background-color: white;
+    padding: 20px;
+  }
+
+  table{
+    border: 2px solid black;
+    border-collapse: collapse;
+}
+th, td{
+    border: 1px solid black;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+
+form.example input[type=text] {
+  padding: 10px;
+  font-size: 17px;
+  border: 1px solid grey;
+  float: left;
+  width: 80%;
+  background: #f1f1f1;
+}
+
+
+form.example button {
+  float: left;
+  width: 20%;
+  padding: 10px;
+  background: #2196F3;
+  color: white;
+  font-size: 17px;
+  border: 1px solid grey;
+  border-left: none; 
+  cursor: pointer;
+}
+
+form.example button:hover {
+  background: black;
+}
+
+
+form.example::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+@import url(//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css);
+
+.detailBox {
+    
+    border:1px solid #bbb;
+    flex: 30%;
+}
+.titleBox {
+    background-color:#fdfdfd;
+    padding:10px;
+}
+.titleBox label{
+  color:#444;
+  flex: 30%;
+  display:inline-block;
+}
+
+.commentBox {
+    padding:10px;
+    border-top:1px dotted #bbb;
+}
+.commentBox .form-group:first-child, .actionBox .form-group:first-child {
+    width:80%;
+}
+.commentBox .form-group:nth-child(2), .actionBox .form-group:nth-child(2) {
+    width:18%;
+}
+.actionBox .form-group * {
+    width:100%;
+}
+.taskDescription {
+    margin-top:10px 0;
+}
+.commentList {
+    padding:0;
+    list-style:none;
+    max-height:200px;
+    overflow:auto;
+}
+.commentList li {
+    margin:0;
+    margin-top:10px;
+}
+.commentList li > div {
+    display:table-cell;
+}
+.commenterImage {
+    width:30px;
+    margin-right:5px;
+    height:100%;
+    float:left;
+}
+.commenterImage img {
+    width:100%;
+    border-radius:50%;
+}
+.commentText p {
+    margin:0;
+}
+.sub-text {
+    color:#aaa;
+    font-family:verdana;
+    font-size:11px;
+}
+.actionBox {
+    border-top:1px dotted #bbb;
+    padding:10px;
+}

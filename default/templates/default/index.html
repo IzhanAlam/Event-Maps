@@ -1,0 +1,54 @@
+{% extends 'default/template.html' %}
+{% load static %}
+{% block picword %}
+
+{{ message }}
+
+{% endblock %}
+
+
+
+
+
+{% block rightHeader %}
+
+<h3>Map</h3>
+
+{% endblock %}
+
+
+
+{% block imagecontent %}
+
+
+<style>
+
+    #map { height: 600px; }
+    .coordinates {
+    background:white;
+    color: black;
+    position: relative;
+    top: 40px;
+    left: 10px;
+    padding: 5px 10px;
+    margin: 0;
+    font-size: 11px;
+    line-height: 18px;
+    border-radius: 3px;
+    display: none;
+    }
+
+    .mapboxgl-popup {
+        max-width: 400px;
+        font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    }
+    
+</style>
+   
+<div id = "map"></div>
+<pre id="coordinates" class="coordinates"></pre>
+
+<script type="text/javascript" src="{% static 'default/map.js' %}"></script>
+
+
+{% endblock %}

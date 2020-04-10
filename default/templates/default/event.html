@@ -1,0 +1,106 @@
+{% extends 'default/template.html' %}
+{% load static %}
+{% block picword %}
+
+{{ Message }}
+
+{% endblock %}
+
+{% block sidecol %}
+
+
+
+
+
+<div id="lati" hidden >{{ userEvent.latitude }}</div>
+<div id="longi" hidden >{{ userEvent.longitude }}</div>
+<h3>Title: </h3> <p>{{userEvent.title}}</p>
+<h5>Description: </h5> <p>{{userEvent.comments}}
+<h5>Time until event closes: </h5> <p>{{ time }}
+<hr>
+</p>
+<div class="detailBox">
+    <div class="titleBox">
+      <label><strong>User Comments about the event.</strong></label>
+    </div>
+    <div class="commentBox">
+        <p class="taskDescription">Type a comment for others to see.</p>
+    </div>
+    <div class="actionBox">
+              {% for i in eventInfo.all %}
+                <div>
+                  Author: {{ i.author }}
+                  <br>
+                </div>
+                <div class="commentText">
+                    <p class="">{{ i.event_comments }}</p> 
+                  <hr>
+                </div>
+              {% endfor %}
+    </div>
+  </div>
+
+<form action = "{% url 'default:event' userEvent.id %}" method = "post">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="exampleFormControlTextarea1">Enter your comment</label>
+      <textarea class="form-control" name="comment" rows="3"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+    <br>
+
+{% endblock %}
+
+{% block imagecontent %}
+
+
+<style>
+
+    #map { height: 600px;}
+    
+    .coordinates {
+    background:white;
+    color: black;
+    position: relative;
+    top: 40px;
+    left: 10px;
+    padding: 5px 10px;
+    margin: 0;
+    font-size: 11px;
+    line-height: 18px;
+    border-radius: 3px;
+    display: none;
+    }
+    #instructions {
+    
+    margin: 20px;
+    width: 100%;
+    top: 0;
+    bottom: 20%;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.9);
+    font-family: sans-serif;
+    font-size: 0.8em;
+    line-height: 2em;
+    }
+
+.duration {
+  font-size: 2em;
+}
+    .mapboxgl-popup {
+        max-width: 400px;
+        font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    }
+    
+</style>
+
+<div id = "map"></div>
+<pre id="coordinates" class="coordinates"></pre>
+<hr>
+<div id = "instructions"></div>
+<script type="text/javascript" src="{% static 'default/map.js' %}"></script>
+
+
+
+{% endblock %}
