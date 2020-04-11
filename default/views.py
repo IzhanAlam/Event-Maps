@@ -47,18 +47,23 @@ def logged_in(request):
     if request.method == 'POST':
         user_name = request.POST.get('username')
         pass_word = request.POST.get('password')
-        user = get_object_or_404(User, username=user_name)
-        account = authenticate(request, username=user_name, password=pass_word)
-        check_pass = user.check_password(pass_word)
-
-        if check_pass:
-            user_true = True
-            login(request, account)
-            return render (request, 'default/index.html', {'user_true': user_true, 'message': 'Signed in.'})
+        user2 = User.objects.filter(username=user_name)
+        if user2:
+            user = User.objects.get(username=user_name)
+            account = authenticate(request, username=user_name, password=pass_word)
+            check_pass = user.check_password(pass_word)
+            if check_pass:
+                user_true = True
+                login(request, account)
+                return render (request, 'default/index.html', {'user_true': user_true, 'message': 'Signed in.'})
+            else:
+                user_true = False
+                return render (request, 'default/index.html', {'user_true': user_true, 'message':'Incorrect Username/Password.'})
         else:
             user_true = False
-            return render (request, 'default/index.html', {'user_true': user_true, 'message':'Incorrect Username/Password.'})
-  
+            return render (request, 'default/index.html', {'user_true': user_true, 'message':'User does not exist.'})
+            
+    
     else:
         return render(request,'default/sign_up.html')
 
