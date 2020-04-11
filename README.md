@@ -2,10 +2,12 @@
 
 
 Youtube Link for demonstration: https://youtu.be/bOH00DeRVV0
+
 Youtube link of geojson demonstration: https://youtu.be/NVHlgDYtYSg
 
 
 About:
+
 About the website.
 
 The goal of this website is to allow users who are signed in to create events. All events have a timer until they are removed. Users are able to click the location where they wish to place their event, alongside a title, and description. You are also able to choose an icon and timer based on the type of event.
