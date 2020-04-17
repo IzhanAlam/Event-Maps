@@ -68,6 +68,7 @@
                           <option value = "basketball-15">Sports</option>
                           <option value = "information-15">Information</option>
                           <option value = "parking-15">Parking</option>
+                          <option value = "bus">Bus</option>
                         </select>
                     </div>
 
@@ -92,21 +93,7 @@
                       <style>
 
                         #map { height: 600px; }
-                        .coordinates {
-                        background:white;
-                        color: black;
-                        position: relative;
-                        top: 40px;
-                        left: 10px;
-                        padding: 5px 10px;
-                        margin: 0;
-                        font-size: 11px;
-                        line-height: 18px;
-                        border-radius: 3px;
-                        display: none;
-                        }
                             #instructions {
-        
                             margin: 20px;
                             width: 100%;
                             top: 0;
@@ -128,14 +115,31 @@
                     </style>
                        
                     <div id = "map"></div>
-                    <pre id="coordinates" class="coordinates"></pre>
+                    <pre id="coordinates" class="coordinates" hidden></pre>
                     <hr>
-                    <div id = "instructions"></div>
+                    <button type="button" class="btn btn-info" id = "button1">Click here to get the directions.</button>
+                    <div id = "instructions" style="display:none"  style="display:none"></div>
+                    <script>
+                    $(document).ready(function(){
+                       $("#button1").click(function(){
+                         $("#instructions").toggle();
+                        });
+                      });
+                    </script>
                     <script type="text/javascript" src="{% static 'default/map_private.js' %}"></script>
+                    <hr>
                     
+                    <script>
+                      $(document).ready(function(){
+                         $("#button2").click(function(){
+                           $("#comments").toggle();
+                          });
+                        });
+                      </script>
 
+                      <button type="button" class="btn btn-info" id = "button2">Click here for comments.</button>
 
-                    <div class="detailBox">
+                    <div class="detailBox" style="display:none" id="comments">
                         <div class="titleBox">
                           <label><strong>User Comments about the event.</strong></label>
                         </div>

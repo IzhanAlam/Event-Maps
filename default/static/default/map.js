@@ -197,7 +197,7 @@ function getRoute(end) {
           },
           paint: {
             'line-color': '#3887be',
-            'line-width': 5,
+            'line-width': 2,
             'line-opacity': 0.75
           }
         });
@@ -284,7 +284,7 @@ function getRoute(end) {
               }
             },
             paint: {
-              'circle-radius': 5,
+              'circle-radius': 3,
              
               'circle-color': '#f30'
             }

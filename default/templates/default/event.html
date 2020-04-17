@@ -7,48 +7,64 @@
 {% endblock %}
 
 {% block sidecol %}
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
+<script>
+  $( function() {
+    $( "#tabs" ).tabs();
+  } );
+  </script>
 
-
-
-
-<div id="lati" hidden >{{ userEvent.latitude }}</div>
+<div id="tabs">
+  <ul>
+    <li><a href="#tabs-1">Event Info</a></li>
+    <li><a href="#tabs-2">Comments</a></li>
+  </ul>
+  <div id="tabs-1">
+    <div id="lati" hidden >{{ userEvent.latitude }}</div>
 <div id="longi" hidden >{{ userEvent.longitude }}</div>
 <h3>Title: </h3> <p>{{userEvent.title}}</p>
 <h5>Description: </h5> <p>{{userEvent.comments}}
 <h5>Time until event closes: </h5> <p>{{ time }}
-<hr>
-</p>
-<div class="detailBox">
-    <div class="titleBox">
-      <label><strong>User Comments about the event.</strong></label>
-    </div>
-    <div class="commentBox">
-        <p class="taskDescription">Type a comment for others to see.</p>
-    </div>
-    <div class="actionBox">
-              {% for i in eventInfo.all %}
-                <div>
-                  Author: {{ i.author }}
-                  <br>
-                </div>
-                <div class="commentText">
-                    <p class="">{{ i.event_comments }}</p> 
-                  <hr>
-                </div>
-              {% endfor %}
-    </div>
   </div>
-
-<form action = "{% url 'default:event' userEvent.id %}" method = "post">
-    {% csrf_token %}
-    <div class="form-group">
-      <label for="exampleFormControlTextarea1">Enter your comment</label>
-      <textarea class="form-control" name="comment" rows="3"></textarea>
+  <div id="tabs-2">
+    <div class="detailBox">
+      <div class="titleBox">
+        <label><strong>User Comments about the event.</strong></label>
+      </div>
+      <div class="actionBox">
+                {% for i in eventInfo.all %}
+                  <div>
+                    Author: {{ i.author }}
+                    <br>
+                  </div>
+                  <div class="commentText">
+                      <p class="">{{ i.event_comments }}</p> 
+                    <hr>
+                  </div>
+                {% endfor %}
+      </div>
     </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>
-    <br>
+  
+  <form action = "{% url 'default:event' userEvent.id %}" method = "post">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="exampleFormControlTextarea1">Enter your comment</label>
+        <textarea class="form-control" name="comment" rows="3"></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+      <br>
+  </div>
+</div>
+ 
+
+
+
+
 
 {% endblock %}
 
@@ -96,9 +112,17 @@
 </style>
 
 <div id = "map"></div>
-<pre id="coordinates" class="coordinates"></pre>
+<pre id="coordinates" class="coordinates" hidden></pre>
 <hr>
-<div id = "instructions"></div>
+<button type="button" class="btn btn-info" id = "button1">Click here to get the directions.</button>
+<div id = "instructions"  style="display:none"></div>
+<script>
+$(document).ready(function(){
+  $("#button1").click(function(){
+    $("#instructions").toggle();
+  });
+});
+</script>
 <script type="text/javascript" src="{% static 'default/map.js' %}"></script>
 
 

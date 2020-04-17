@@ -204,13 +204,6 @@ def createEvent(request):
     
     
        
-    
-   
-    
-        
-
-
-
 
 
 def geojsondumps(request):
@@ -393,7 +386,7 @@ def createPrivate(request, userid):
     prv_obj = privateComments.objects.filter(instance=userid)
 
     if request.user.is_authenticated:
-        return render(request, 'default/privatemap.html', {'privateComments':prv_obj, 'page':userid})
+        return render(request, 'default/privatemap.html', {'privateComments':prv_obj, 'page':userid, 'message':"Your Private Map."})
     else:
         return render(request, 'default/index.html', {'message': "Sorry, must be signed in to create a private instance."})
 
@@ -419,5 +412,27 @@ def createprivatecomment(request):
 
 def about(request):
     return render(request, 'default/about.html')
+
+
+def search(request):
+    query = request.POST.get('query')
+    event_obj = userEvent.objects.filter(title__icontains=query) | userEvent.objects.filter(comments__icontains=query)
+    
+
+    current_date = timezone.make_aware(datetime.datetime.now(),timezone.get_default_timezone())
+
+    active_events_id = []
+    for i in event_obj:
+        if i.pub_date +  datetime.timedelta(seconds=i.time) > current_date:
+            active_events_id.append(i.id)
+    
+    active_events = userEvent.objects.filter(id__in=active_events_id)
+
+
+
+
+    return render(request, 'default/search.html',{'message':"Currently active events.", 'userEvent':active_events, 'userEvent_old': event_obj})
+
+
 
     

@@ -29,13 +29,18 @@
             {% else %}
             <a href="{% url 'default:index' %}">Log in/ Sign Up</a>
             {% endif %}
+            <form class="example" action="{% url 'default:search' %}" method = "post">
+                {% csrf_token %}
+                <input type="text" placeholder="Search for an event..." name="query" id="query">
+                <button type="submit"><i class="fa fa-search"></i></button>
+            </form>
 
 
         </div>
 
         <div class = "picContainer">
             <img src= "{% static 'default/Image2.jpg' %}" width = 100% height = "200" alt="Photo of mountains">
-            <div class = "centered"><font color="white"><font size="72"><p style ="text-align: center;"><h1 class="display-4">{% block picword %}{% endblock %}</h1></p></font></font></div>
+            <div class = "centered"><font color="white"><font size="72"><p style ="text-align: center;"><h1 class="display-4">{% block picword %}View currently active events{% endblock %}</h1></p></font></font></div>
         </div>
 
         <div class="rowCon">
@@ -77,6 +82,7 @@
                           <option value = "basketball-15">Sports</option>
                           <option value = "library-15">Information</option>
                           <option value = "parking-15">Parking</option>
+                          <option value = "bus">Bus</option>
                         </select>
                     </div>
 

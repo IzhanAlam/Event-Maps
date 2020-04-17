@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+
+    <head>
+        <title>Event Maps</title>
+
+        <link rel="stylesheet" type="text/css" href="{% static 'default/styles2.css' %}">
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+        <script src="https://api.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.js"></script>
+        <link href="https://api.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.css" rel="stylesheet" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+        <!-- Turf.js plugin -->
+        <script src='https://npmcdn.com/@turf/turf/turf.min.js'></script>
+    </head>
+
+    <body>
+
+        <div class="navbar">
+
+            <a href="{% url 'default:index' %}" >Home</a>
+            <a href="{% url 'default:about' %}" >About</a>
+            {% if user.is_authenticated %}
+            <a href="{% url 'default:createPrivate' user.id %}">Private Map</a>
+            <a href="{% url 'default:log_out' %}" >Logout</a>
+            {% else %}
+            <a href="{% url 'default:index' %}">Log in/ Sign Up</a>
+            {% endif %}
+            <form class="example" action="{% url 'default:search' %}" method = "post">
+                {% csrf_token %}
+                <input type="text" placeholder="Search for an event..." name="query" id="query">
+                <button type="submit"><i class="fa fa-search"></i></button>
+            </form>
+
+
+        </div>
+
+        <div class = "picContainer">
+            <img src= "{% static 'default/Image2.jpg' %}" width = 100% height = "200" alt="Photo of mountains">
+            <div class = "centered"><font color="white"><font size="72"><p style ="text-align: center;"><h1 class="display-4">{% block picword %}{{ message }}{% endblock %}</h1></p></font></font></div>
+        </div>
+
+        <div class="rowCon">
+
+            <div class = "main">
+                {% if userEvent %}
+                <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Title</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Date Published</th>
+                      </tr>
+                    </thead>
+                    {% for i in userEvent.all %}
+                    <tbody>
+                      <tr>
+                        <td><a href="{% url 'default:event' i.id %}"> {{ i.title }}</a></td>
+                        <td> {{ i.comments }}</td>
+                        <td> {{i.pub_date }}</td>
+                      </tr>
+                    </tbody>
+                    {% endfor %}
+                  </table>
+                  <button type="button" class="btn btn-info" id = "button1">View archived events.</button>
+                  <table class="table" style="display:none" id ="more_events">
+                    <thead>
+                      <tr>
+                        <th scope="col">Title</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Date Published</th>
+                      </tr>
+                    </thead>
+                    <br>
+                    {% for i in userEvent_old.all %}
+                    <tbody>
+                      <tr>
+                        <td><a href="{% url 'default:event' i.id %}"> {{ i.title }}</a></td>
+                        <td> {{ i.comments }}</td>
+                        <td> {{ i.pub_date }}</td>
+                      </tr>
+                    </tbody>
+                    {% endfor %}
+                  </table>
+                  <script>
+                  $(document).ready(function(){
+                      $("#button1").click(function(){
+                          $("#more_events").toggle();
+                      });
+                  });
+                  </script>
+                {% else %}
+                <h1>Sorry, no results.</h1>
+                {% endif %}
+          
+
+            </div>
+
+        </div>  
+
+        
+
+
+    </body>
+
+    
+</html>

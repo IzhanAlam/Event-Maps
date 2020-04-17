@@ -24,4 +24,5 @@ urlpatterns = [
 
 
     path('event/<int:event_id>', views.event, name='event'),
+    path('event/search', views.search, name='search'),
 ]
