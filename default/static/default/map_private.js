@@ -98,7 +98,7 @@ map.on('mousemove', function(e) {
 
   popup.setLngLat(feature.geometry.coordinates)
     //.setHTML(feature.properties.description)
-    .setHTML('<h5>'+ feature.properties.description + '</h5>')
+    .setHTML('<h5>'+ feature.properties.description + '</h5>'+ '<br>' + feature.properties.comment)
 
     .addTo(map);
 

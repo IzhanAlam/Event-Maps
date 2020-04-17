@@ -384,9 +384,8 @@ def geojsondumpsprivate(request, userid):
 def createPrivate(request, userid):
 
     prv_obj = privateComments.objects.filter(instance=userid)
-
     if request.user.is_authenticated:
-        return render(request, 'default/privatemap.html', {'privateComments':prv_obj, 'page':userid, 'message':"Your Private Map."})
+        return render(request, 'default/privatemap.html', {'privateComments':prv_obj, 'page':userid, 'message':"Private Map Instance."})
     else:
         return render(request, 'default/index.html', {'message': "Sorry, must be signed in to create a private instance."})
 
