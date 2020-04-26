@@ -122,6 +122,15 @@ map.on('load', function() {
 
 var popup = new mapboxgl.Popup();
 
+
+var MyDate = new Date();
+var MyDateString;
+
+MyDateString = ('0' + MyDate.getDate()).slice(-2) + '-' + ('0' + (MyDate.getMonth()+1)).slice(-2) + '-' + MyDate.getFullYear();
+MyDateString = MyDate.getFullYear() + '-' + ('0' + (MyDate.getMonth()+1)).slice(-2) + '-' + ('0' + MyDate.getDate()).slice(-2)+ " " + MyDate.getHours() + ":" + MyDate.getMinutes() + ":" + MyDate.getSeconds() +'-06:00';
+
+
+
 map.on('mousemove', function(e) {
   var features = map.queryRenderedFeatures(e.point, { layers: ['30min', '2hrs', '6hrs'] });
   if (!features.length) {
@@ -129,14 +138,24 @@ map.on('mousemove', function(e) {
     return;
   }
   var feature = features[0];
+  
 
-  popup.setLngLat(feature.geometry.coordinates)
-    //.setHTML(feature.properties.description)
-    .setHTML('<h5><a href="' + feature.properties.URL + '">' + feature.properties.description + '</a></h5>')
-
+  if (MyDateString < feature.properties.date){
+    popup.setLngLat(feature.geometry.coordinates)
+    //.setHTML('<h5><a href="' + feature.properties.URL + '">' + feature.properties.description + '</a></h5><br>'+feature.properties.date+'<br>Current Date: '+feature.properties.current_date+'<br>FUTURE EVENT')
+    .setHTML('<h5>' + feature.properties.description + '</h5><br> Event opens at: <br>'+feature.properties.date)
     .addTo(map);
+    map.getCanvas().style.cursor = features.length ? 'pointer' : '';
+  }
+  else {
+    popup.setLngLat(feature.geometry.coordinates)
+    .setHTML('<h5><a href="' + feature.properties.URL + '">' + feature.properties.description + '</a></h5><br> Date Published: '+feature.properties.date)
+    .addTo(map);
+    map.getCanvas().style.cursor = features.length ? 'pointer' : '';
+  }
+ 
 
-  map.getCanvas().style.cursor = features.length ? 'pointer' : '';
+
 });
 
 
@@ -295,6 +314,8 @@ function getRoute(end) {
   });
 
 
+  //Date time
+  
 
 
 

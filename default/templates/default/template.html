@@ -8,6 +8,8 @@
         <link rel="stylesheet" type="text/css" href="{% static 'default/styles2.css' %}">
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        
+
         <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
         <script src="https://api.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.js"></script>
         <link href="https://api.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.css" rel="stylesheet" />
@@ -15,6 +17,13 @@
 
         <!-- Turf.js plugin -->
         <script src='https://npmcdn.com/@turf/turf/turf.min.js'></script>
+
+         <!-- jQuery -->
+         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+
+         <!-- XDSoft DateTimePicker -->
+         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css" integrity="sha256-DOS9W6NR+NFe1fUhEE0PGKY/fubbUCnOfTje2JMDw3Y=" crossorigin="anonymous" />
+         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js" integrity="sha256-FEqEelWI3WouFOo2VWP/uJfs1y8KJ++FLh2Lbqc8SJk=" crossorigin="anonymous"></script>
     </head>
 
     <body>
@@ -50,12 +59,43 @@
                 {% if user.is_authenticated %}
                 
                 <h3>Create an Event</h3>
+                <br>
+
                 
                 <form action = "{% url 'default:createEvent' %}" method="POST">
                     {% csrf_token %}
                     <input type="hidden" name="lat" id ="lat" value="" />
                     <input type="hidden" name="long" id = "long" value="" />
                     <input type="hidden" name="id" value= "{{ user.id }}" />
+
+    
+                    <button type="button" class="btn btn-info" id = "button1">Click here to plan for a future event.</button>
+                    <div id = "display_date"  style="display:none">
+                    
+                        <input id="datetimepicker" name = "datetimepicker" type="text">
+    
+                        <script>
+                            $(function () {
+                                $("#datetimepicker").datetimepicker({
+                                    inline:true,
+                                    minDate:'0'
+                                    //format:'D/M/Y HH:mm'
+                                });
+                            });
+    
+                        </script>
+                    
+                    </div>
+                    <script>
+                        $(document).ready(function(){
+                            $("#button1").click(function(){
+                                $("#display_date").toggle();
+                            });
+                        });
+                    </script>
+
+    
+                    <br>
 
                     <hr>
                     <input type="text" class="form-control" name="title" placeholder="Enter Title" required>
@@ -90,6 +130,9 @@
 
                 </form>
                 {{ time }}
+
+
+
                 {% else %}
                 <h3>Sign In</h3>
 

@@ -78,51 +78,33 @@ def createEvent(request):
     time = request.POST.get('Time')
     icon = request.POST.get('icon')
 
+    date_time = request.POST.get('datetimepicker')
+
+    current_date = timezone.make_aware(datetime.datetime.now(),timezone.get_default_timezone())
+
+    if not request.POST.get('datetimepicker'):
+        date_time = current_date
+    else:
+        date_time = datetime.datetime.strptime(date_time,'%Y/%m/%d %H:%M')
+        date_time = timezone.make_aware(date_time, timezone.get_default_timezone())
+
+    str_date = str(date_time)
+    str_current_date = str(current_date)
+
     if not request.POST.get('lat'):
         return render(request, 'default/index.html', {'message': 'Please Select Location or Timer.'})
-    else:
-        '''
-        title = request.POST.get('title')
-        comment = request.POST.get('comment')
-        current_user= request.POST.get('id')
-        event = userEvent(latitude=latitude,longitude=longitude,pub_date=timezone.now(), title=title, comments=comment,user_id=current_user)
-        event.save()
-        
-
-        my_feature = geojson.dumps(Feature(geometry=Point((float(longitude),float(latitude))), properties={"description":title, "URL": 'http://127.0.0.1:8000/event/'+str(event.id), "comment":comment}))
-        geo_obj = geojson.dumps(FeatureCollection([my_feature]))
-        new_feature = geo(geojson_object=geo_obj, feature=my_feature,pub_date=timezone.now())
-        
-        new_feature.save()
-
-        obj = list(geo.objects.values_list('feature', flat=True))
-        
-        feature_col = []
-        for i in range(0,len(obj)):
-            if obj[i]:
-                feature_col.append(geojson.loads(obj[i]))
-        
-        new_feature_col = geojson.dumps(FeatureCollection(feature_col))
-        new_geo = geo(geojson_object=(new_feature_col), pub_date=timezone.now())
-        new_geo.save()
-        
-        eventinfo = eventInfo(event_comments=comment, popup_id=new_feature.id)
-        eventinfo.save()
-
-        return render(request, 'default/index.html', {'geojson_obj': new_feature_col})
-        '''
-        
+    else:        
         if time == '30':
             title = request.POST.get('title')
             comment = request.POST.get('comment')
             current_user= request.POST.get('id')
-            event = userEvent(latitude=latitude,longitude=longitude,pub_date=timezone.make_aware(datetime.datetime.now(),timezone.get_default_timezone()), title=title, comments=comment,user_id=current_user, time=1800)
+            event = userEvent(latitude=latitude,longitude=longitude,pub_date=date_time, title=title, comments=comment,user_id=current_user, time=1800)
             event.save()
         
 
-            my_feature = geojson.dumps(Feature(geometry=Point((float(longitude),float(latitude))), properties={"description":title, "URL": 'http://127.0.0.1:8000/event/'+str(event.id), "comment":comment, "icon": icon}))
+            my_feature = geojson.dumps(Feature(geometry=Point((float(longitude),float(latitude))), properties={"description":title, "URL": 'http://127.0.0.1:8000/event/'+str(event.id), "comment":comment, "icon": icon, "date":str_date, "current_date":str_current_date}))
             geo_obj = geojson.dumps(FeatureCollection([my_feature]))
-            new_feature = geo30min(geojson_object=geo_obj, feature=my_feature,pub_date=timezone.now())
+            new_feature = geo30min(geojson_object=geo_obj, feature=my_feature,pub_date=date_time)
         
             new_feature.save()
 
@@ -134,25 +116,25 @@ def createEvent(request):
                     feature_col.append(geojson.loads(obj[i]))
         
             new_feature_col = geojson.dumps(FeatureCollection(feature_col))
-            new_geo = geo30min(geojson_object=(new_feature_col), pub_date=timezone.now())
+            new_geo = geo30min(geojson_object=(new_feature_col), pub_date=date_time)
             new_geo.save()
 
             
 
-            return render(request, 'default/index.html')
+            return render(request, 'default/index.html', {'message':'Event Created'})
         
     
         if time== '2':
             title = request.POST.get('title')
             comment = request.POST.get('comment')
             current_user= request.POST.get('id')
-            event = userEvent(latitude=latitude,longitude=longitude,pub_date=timezone.make_aware(datetime.datetime.now(),timezone.get_default_timezone()), title=title, comments=comment,user_id=current_user, time=7200)
+            event = userEvent(latitude=latitude,longitude=longitude,pub_date=date_time, title=title, comments=comment,user_id=current_user, time=7200)
             event.save()
         
 
-            my_feature = geojson.dumps(Feature(geometry=Point((float(longitude),float(latitude))), properties={"description":title, "URL": 'http://127.0.0.1:8000/event/'+str(event.id), "comment":comment, "icon": icon}))
+            my_feature = geojson.dumps(Feature(geometry=Point((float(longitude),float(latitude))), properties={"description":title, "URL": 'http://127.0.0.1:8000/event/'+str(event.id), "comment":comment, "icon": icon, "date":str_date, "current_date":str_current_date}))
             geo_obj = geojson.dumps(FeatureCollection([my_feature]))
-            new_feature = geo2hrs(geojson_object=geo_obj, feature=my_feature,pub_date=timezone.now())
+            new_feature = geo2hrs(geojson_object=geo_obj, feature=my_feature,pub_date=date_time)
         
             new_feature.save()
 
@@ -164,25 +146,22 @@ def createEvent(request):
                     feature_col.append(geojson.loads(obj[i]))
         
             new_feature_col = geojson.dumps(FeatureCollection(feature_col))
-            new_geo = geo2hrs(geojson_object=(new_feature_col), pub_date=timezone.now())
+            new_geo = geo2hrs(geojson_object=(new_feature_col), pub_date=date_time)
             new_geo.save()
         
-            #eventinfo = eventInfo(event_comments=comment, popup_id=new_feature.id)
-            #eventinfo.save()
-
             return render(request, 'default/index.html')
         
         if time== '6':
             title = request.POST.get('title')
             comment = request.POST.get('comment')
             current_user= request.POST.get('id')
-            event = userEvent(latitude=latitude,longitude=longitude,pub_date=timezone.make_aware(datetime.datetime.now(),timezone.get_default_timezone()), title=title, comments=comment,user_id=current_user, time=21600)
+            event = userEvent(latitude=latitude,longitude=longitude,pub_date=date_time, title=title, comments=comment,user_id=current_user, time=21600)
             event.save()
         
 
-            my_feature = geojson.dumps(Feature(geometry=Point((float(longitude),float(latitude))), properties={"description":title, "URL": 'http://127.0.0.1:8000/event/'+str(event.id), "comment":comment, "icon": icon}))
+            my_feature = geojson.dumps(Feature(geometry=Point((float(longitude),float(latitude))), properties={"description":title, "URL": 'http://127.0.0.1:8000/event/'+str(event.id), "comment":comment, "icon": icon, "date":str_date, "current_date":str_current_date}))
             geo_obj = geojson.dumps(FeatureCollection([my_feature]))
-            new_feature = geo6hrs(geojson_object=geo_obj, feature=my_feature,pub_date=timezone.now())
+            new_feature = geo6hrs(geojson_object=geo_obj, feature=my_feature,pub_date=date_time)
         
             new_feature.save()
 
@@ -194,11 +173,8 @@ def createEvent(request):
                     feature_col.append(geojson.loads(obj[i]))
         
             new_feature_col = geojson.dumps(FeatureCollection(feature_col))
-            new_geo = geo6hrs(geojson_object=(new_feature_col), pub_date=timezone.now())
+            new_geo = geo6hrs(geojson_object=(new_feature_col), pub_date=date_time)
             new_geo.save()
-        
-            #eventinfo = eventInfo(event_comments=comment, popup_id=new_feature.id)
-            #eventinfo.save()
 
             return render(request, 'default/index.html')
     
@@ -434,4 +410,3 @@ def search(request):
 
 
 
-    

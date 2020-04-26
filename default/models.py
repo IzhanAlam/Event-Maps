@@ -36,7 +36,7 @@ class geo30min(models.Model):
     recent = models.BooleanField(default=True)
 
     def was_published_recently(self):
-        return self.pub_date >= timezone.now() - datetime.timedelta(minutes=30)
+        return self.pub_date >= timezone.make_aware(datetime.datetime.now(),timezone.get_default_timezone()) - datetime.timedelta(minutes=30)
 
     def __str__(self):
         return self.geojson_object
@@ -47,7 +47,7 @@ class geo2hrs(models.Model):
     pub_date = models.DateTimeField('date published')
     recent = models.BooleanField(default=True)
     def was_published_recently(self):
-        return self.pub_date >= timezone.now() - datetime.timedelta(hours=2)
+        return self.pub_date >= timezone.make_aware(datetime.datetime.now(),timezone.get_default_timezone()) - datetime.timedelta(hours=2)
 
     def __str__(self):
         return self.geojson_object
@@ -59,7 +59,7 @@ class geo6hrs(models.Model):
     recent = models.BooleanField(default=True)
 
     def was_published_recently(self):
-        return self.pub_date >= timezone.now() - datetime.timedelta(hours=6)
+        return self.pub_date >= timezone.make_aware(datetime.datetime.now(),timezone.get_default_timezone()) - datetime.timedelta(hours=6)
 
     def __str__(self):
         return self.geojson_object
